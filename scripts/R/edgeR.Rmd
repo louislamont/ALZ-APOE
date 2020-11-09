@@ -1,0 +1,76 @@
+---
+title: "20201101-edgeR"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{R}
+library(tidyverse)
+library(edgeR)
+```
+
+Explore the effects of isogenic editing of APOE E4 to E3 in cerebral organoids. Comparison of APOE E4 vs E3 isogenic organoids with 3 biological replicates per group.
+
+```{R}
+### Read in counts
+rawcounts<-read.table("../../output/counts/GeneCounts.txt", sep="\t", header=T, stringsAsFactors = F, quote="")
+
+filtered.counts<-rawcounts
+#filtered.counts<-rawcounts[rawcounts$]
+
+### Read in metadata
+metadata<-read.table("../../data/SraRunTable.txt", sep=",", header = T, stringsAsFactors = F)
+genotype<-factor(metadata$apoe_genotype, levels=c("E4E4_CTR", "E3E3_ISO"))
+
+### Filtering genes with low expression
+### cutoff - 10/L (L = min library size in millions)
+10/(min(colSums((filtered.counts[,6:ncol(filtered.counts)])))/1000000)
+### This will keep genes that have a count of at least 1 in at least 3 samples
+keep <- rowSums(cpm(filtered.counts[,6:ncol(filtered.counts)], )>1)>=3 
+
+filtered.counts <-filtered.counts[keep, ]
+nrow(filtered.counts)
+### 16604 genes left
+
+y <- DGEList(counts = filtered.counts[,6:ncol(filtered.counts)], genes = filtered.counts[,1:5], group = genotype)
+y<-calcNormFactors(y)
+
+### Write normalized counts
+cpmout<-as.data.frame(cpm(y))
+cpmout<-cbind(y$genes, cpmout)
+
+write.table(cpmout, "../../output/normalized-counts.tsv", sep="\t", col.names = T, row.names = F, quote=F)
+```
+
+
+
+```{R}
+plotMDS(y, col=as.integer(factor(metadata$apoe_genotype)))
+
+design<-model.matrix(~genotype)
+
+y<-estimateDisp(y, design)
+
+fit <- glmFit(y, design)
+colnames(design)
+
+### Run exact test and get DE results
+et<-exactTest(y)
+et.genes<-topTags(et, n=Inf)$table
+significant<-et.genes[which(et.genes$FDR<0.05),]
+significant.fc<-significant[which(abs(significant$logFC)>=1),]
+write.table(et.genes, "../../output/DE/APOE-E4-vs-APOE-E3.tsv", sep="\t", col.names = T, row.names = F, quote=F)
+write.table(significant.fc, "../../output/DE/APOE-E4-vs-APOE-E3-significant.tsv", sep="\t", col.names = T, row.names = F, quote=F)
+
+
+### Run linear model and get DE results
+#lrt <- glmLRT(fit,coef=2)
+#DEtable <- topTags(lrt, n=Inf)$table
+
+#significant<-DEtable[which(DEtable$FDR<0.05),]
+#significant.fc<-significant[which(abs(significant$logFC)>=1),]
+```
+
