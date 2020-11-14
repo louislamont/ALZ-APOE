@@ -1,0 +1,20 @@
+---
+title: "Methods"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Data collection
+
+RNA-seq data were downloaded from GEO, accession [GSE117588](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE117588).
+
+### Data processing
+
+Adapter sequences were trimmed using cutadapt (v 2.10). Low quality (Q<20) and uncalled (N) bases were trimmed from edges of reads. Trimmed reads below 25 bp were discarded. Trimmed reads were mapped to the Human GRCh38 genome using HISAT2 (v 2.2.1) with library strandedness (RF) indicated. HISAT2 genome indexes were constructed using GTF and genomic fasta files obtained from Ensembl build 98. Aligned reads were filtered by samtools such that only uniquely mapped reads were retained in the final alignments. Gene level counts were obtained for the Ensembl ens98 annotations using featureCounts (v 2.0.1) and specifying strandedness (-s 2). Exon level counts were obtained by additionally specifying feature-level counting (-f) and allowing multi-overlapping reads (-O).
+
+### Statistical analysis
+
+Raw counts were loaded into R. Genes with low counts were removed if they had less than 10/L counts per million in at least 3 samples, where L is the minimum library size in millions. Filtered counts were loaded into edgeR (v. 3.30.3) and normalization factors were calculated for each sample. For gene level counts, an exact test between genotypes was used to calculate differential expression. For exon level counts, a linear model was fitted and differential splicing was assessed using the diffSpliceDGE() function.
