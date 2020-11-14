@@ -42,14 +42,37 @@ y<-calcNormFactors(y)
 cpmout<-as.data.frame(cpm(y))
 cpmout<-cbind(y$genes, cpmout)
 
-write.table(cpmout, "../../output/normalized-counts.tsv", sep="\t", col.names = T, row.names = F, quote=F)
+write.table(cpmout, "../../output/counts/normalized-counts.tsv", sep="\t", col.names = T, row.names = F, quote=F)
+```
+
+### Check sample clustering
+
+```{R}
+plotMDS(y, col=as.integer(factor(metadata$apoe_genotype)))
+```
+
+Samples show strong clustering based on APOE variant
+
+### Get normalization factors for deepTools
+
+```{R}
+NFs<-calcNormFactors(filtered.counts[,6:ncol(filtered.counts)], method = "TMM")
+
+tmp.libsize<-colSums(filtered.counts[,6:ncol(filtered.counts)])
+
+SizeFactors<-NFs*tmp.libsize / 1000000
+
+SF.deepTools<-1/SizeFactors
+
+outfile<-data.frame(DKR_ID=names(SF.deepTools), sizeFactors=SF.deepTools)
+
+write.table(outfile, "../../output/counts/deeptools-normalization-factors.txt", sep="\t", col.names = T, row.names = F, quote=F)
 ```
 
 
 
 ```{R}
-plotMDS(y, col=as.integer(factor(metadata$apoe_genotype)))
-
+###
 design<-model.matrix(~genotype)
 
 y<-estimateDisp(y, design)
@@ -60,13 +83,17 @@ colnames(design)
 ### Run exact test and get DE results
 et<-exactTest(y)
 et.genes<-topTags(et, n=Inf)$table
+
+### Get significant genes with a fold change of 2 or more
 significant<-et.genes[which(et.genes$FDR<0.05),]
 significant.fc<-significant[which(abs(significant$logFC)>=1),]
+
+### Write all genes and significant genes out to a file
 write.table(et.genes, "../../output/DE/APOE-E4-vs-APOE-E3.tsv", sep="\t", col.names = T, row.names = F, quote=F)
 write.table(significant.fc, "../../output/DE/APOE-E4-vs-APOE-E3-significant.tsv", sep="\t", col.names = T, row.names = F, quote=F)
 
 
-### Run linear model and get DE results
+### Alternatively, you can run a linear model and get DE results
 #lrt <- glmLRT(fit,coef=2)
 #DEtable <- topTags(lrt, n=Inf)$table
 

@@ -32,3 +32,31 @@ mergecounts<-merge(geneinfo[,c(1,7,9,5,6)], counts, by=1)
 mergecounts<-mergecounts[!duplicated(mergecounts),]
 write.table(mergecounts, "../../output/counts/GeneCounts.txt", sep="\t", col.names = T, row.names = F, quote=F)
 ```
+
+### Exon-level counts
+
+```{R}
+### Read in raw counts
+counts<-read.table("../../output/counts/exon-counts.txt", sep="\t", header=T, stringsAsFactors = F)
+
+### Fix column names
+colnames(counts)<-c("geneID", colnames(counts)[2:6], unlist(lapply(str_split(colnames(counts)[7:12], pattern = "\\."), "[[", 6)))
+
+### Read in additional gene info file
+geneinfo<-read.table("../../data/ens98-gene-info.txt", sep="\t", header=T, stringsAsFactors = F, quote="")
+#colnames(geneinfo)
+
+countsout<-counts[,1:6]
+
+### Add gene name, type, description, chromosome to counts table
+m <- match(counts$geneID, geneinfo$Gene.stable.ID)
+countsout$Gene.name <- geneinfo$Gene.name[m]
+countsout$Gene.type <- geneinfo$Gene.type[m]
+countsout$Description <- geneinfo$Gene.description[m]
+
+countsout<-cbind(countsout, counts[,7:12])
+
+countsout<-countsout[!duplicated(countsout),]
+
+write.table(countsout, "../../output/counts/ExonCounts.txt", sep="\t", col.names = T, row.names = F, quote=F)
+```
