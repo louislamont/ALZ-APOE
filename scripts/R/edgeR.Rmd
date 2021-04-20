@@ -23,7 +23,7 @@ filtered.counts<-rawcounts
 
 ### Read in metadata
 metadata<-read.table("../../data/SraRunTable.txt", sep=",", header = T, stringsAsFactors = F)
-genotype<-factor(metadata$apoe_genotype, levels=c("E4E4_CTR", "E3E3_ISO"))
+genotype<-factor(metadata$apoe_genotype, levels=c("E3E3_ISO", "E4E4_CTR"))
 
 ### Filtering genes with low expression
 ### cutoff - 10/L (L = min library size in millions)

@@ -22,7 +22,7 @@ filtered.counts<-rawcounts
 
 ### Read in metadata
 metadata<-read.table("../../data/SraRunTable.txt", sep=",", header = T, stringsAsFactors = F)
-genotype<-factor(metadata$apoe_genotype, levels=c("E4E4_CTR", "E3E3_ISO"))
+genotype<-factor(metadata$apoe_genotype, levels=c("E3E3_ISO", "E4E4_CTR"))
 
 ### Filtering genes with low expression
 ### cutoff - 10/L (L = min library size in millions)
@@ -115,7 +115,7 @@ colnames(y$genes)
 sp <- diffSpliceDGE(fit, coef=2, geneid="geneID", exonid="Start")
 
 simes<-topSpliceDGE(sp, test="Simes", n=Inf)
-de.simes<-simes[which(testsplice$FDR<0.05),]
+de.simes<-simes[which(simes$FDR<0.05),]
 write.table(de.simes, "../../output/splicing/differential-splicing-simestest.tsv", sep="\t", col.names = T, row.names = F, quote=F)
 
 ftest<-topSpliceDGE(sp, test="gene", n=Inf)
@@ -128,7 +128,13 @@ length(intersect(de.simes$geneID, de.ftest$geneID))
 
 
 ```{R}
+png("../../plots/splicing/PCDHGC3-exonusage.png", width = 800, height = 600)
 plotSpliceDGE(sp, geneid="PCDHGC3", genecol="Gene.name")
+dev.off()
+
+png("../../plots/splicing/PCDHGC4-exonusage.png", width = 800, height = 600)
+plotSpliceDGE(sp, geneid="PCDHGC4", genecol="Gene.name")
+dev.off()
 
 plotSpliceDGE(sp, geneid="PCDHA6", genecol="Gene.name")
 
@@ -139,5 +145,7 @@ plotSpliceDGE(sp, geneid="NTRK2", genecol="Gene.name")
 plotSpliceDGE(sp, geneid="TMEM161B-AS1", genecol="Gene.name")
 
 plotSpliceDGE(sp, geneid="CHD4", genecol="Gene.name")
+
+plotSpliceDGE(sp, geneid="PAX8-AS1", genecol="Gene.name")
 ```
 
