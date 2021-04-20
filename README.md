@@ -42,7 +42,7 @@ Is it possible these reads represent an activated enhancer element in E4 cells? 
 
 **Gene-level and exon-level differential expression suggest a switch from PCDHGC3 in E3 cells to PCDHGC4 in E4 cells**
 
-At the gene-level, PCDHGC3 is found to be significantly downregulated in E4 cells (log2FC=-4.46, FDR=3.79E-58), while PCDHGC4 was found to be significantly upregulated in E3 cells (log2FC=1.86, FDR=8.58E-12).
+At the gene-level, PCDHGC3 is found to be significantly downregulated in E4 cells (log2FC=-4.46, FDR=3.79E-58), while PCDHGC4 was found to be significantly upregulated in E4 cells (log2FC=1.86, FDR=8.58E-12).
 
 At the exon-level, the exons in the first half of PCDHGC3 were found to be downregulated in E4 cells while the latter half of the gene was not different between the two cell lines. 
 
@@ -52,7 +52,7 @@ On the other hand, exons in the first half of PCDHGC4 were found to be upregulat
 
 ![PCDHGC4 exon differential expression](https://github.com/louislamont/ALZ-APOE/blob/main/plots/splicing/PCDHGC4-exonusage.png)
 
-Visualizing the locus containing PCDHGC3 and PCDHGC4 suggests a switch from PCDHGC3 to PCDHGC4 in E4 cells.
+PCDHGC3 and 4 share their last exons, so the exon-level differential expression data potentially indicates a switch from one PCDHGC3 to 4. More directly, if we look at expression data coming from the locus containing PCDHGC3 and PCDHGC4, we can see a clear difference in the initial exons, while expression looks similar for the latter exons. This suggests a switch from PCDHGC3 to PCDHGC4 expression in E4 cells.
 
 ![PCDHGC switch](https://github.com/louislamont/ALZ-APOE/blob/main/plots/splicing/PCDHGC3-IGV.png)
 
