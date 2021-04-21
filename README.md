@@ -1,18 +1,34 @@
 # Alzheimer's investigation
 
-Here I am just playing around with some mRNA-Seq data used in a study related to Alzheimer's disease.
+In this repository, I am just playing around with some mRNA-Seq data used in a study related to Alzheimer's disease. RNA-seq data were downloaded from GEO, accession GSE117588. Thank you to the authors for making their data available.
+
+Source: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6386196/
 
 ### APOE4 expression in cerebral organoids
 
-APOE E4 variant is a major genetic risk allele for Alzheimer's disease.
+### Background
 
-APOE E3 variant is the most common in caucasian populations.
+The Apolipoprotein E (APOE) E3 variant is the most common variant of the gene in caucasion populations. However, the E4 variant is known to be a major genetic risk allele for Alzheimer's disease.
 
-Here, is an analysis of RNA sequencing data from two lines of cerebral organoids derived from iPSCs. One line is homozygous for the E3 variant and one for the E4 variant.
+Here is an analysis of RNA sequencing data from two lines of cerebral organoids derived from iPSCs. One line is homozygous for the E3 variant and one for the E4 variant. Differential expression was performed at the gene-level and the exon-level between the E3 and E4 cell lines.
 
-RNA-seq data were downloaded from GEO, accession GSE117588. Thank you to the authors for making their data available.
+### Methods
 
-Source: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6386196/
+*Data acquisition*
+
+Sequencing files were downloaded from GEO accession GSE117588 using prefetch and fasterq-dump (v 2.10.9) from the SRA toolkit.
+
+*Data processing*
+
+Raw RNA-Seq files were trimmed using cutadapt (v 2.10) with the following flags: `-a AGATCGGAAGAGCACACGTCTGAACTCCAGTCA -A AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT -j 8 --trim-n -m 25 -q 20,20`. Trimmed reads were aligned to the Ensembl v98 GRCh38 genome using hisat2 (v 2.2.1) with the following flags: `--rna-strandness RF --dta`. Gene-level counts were determined using featureCounts (v 2.0.1) with flags `-s 2 -p`. Exon-level counts were determined with featureCounts and the flags `-s 2 -p -f -O`. Bam files were also processed into bigwig files for visualization with the bamCoverage function from deepTools (v 3.4.0) using flag `-bs 1`.
+
+*Differential expression*
+
+Counts were read into R (v4.0.4) and differential expression at gene and exon levels was performed using edgeR (v3.32.1). Briefly, low expression genes (genes with expression lower than 10/L, where L is the minimum library size in millions, in at least 3 samples) were removed. Normalization by the TMM method was calculated (`calcNormFactors`) and the two groups were compared with the `exactTest` function. DE genes were defined as those having FDR <= 0.05 and log2(FC)>=1. Exon-level DE was performed similarly, with differentially spliced genes called using the `diffSpliceDGE` function. Scripts for these analyses are available in the scripts/R folder.
+
+*Visualization*
+
+Visualization of expression data was performed in R using tidyverse and ggplot2 packages, as well as IGV as a genome browser.
 
 ### Results
 
