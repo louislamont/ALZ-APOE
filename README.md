@@ -1,6 +1,6 @@
 # Alzheimer's investigation
 
-In this repository, I am just playing around with some mRNA-Seq data used in a study related to Alzheimer's disease. RNA-seq data were downloaded from GEO, accession GSE117588. Thank you to the authors for making their data available.
+In this repository, I am just playing around with some rRNA-depleted RNA-Seq data used in a study related to Alzheimer's disease. RNA-seq data were downloaded from GEO, accession GSE117588. Thank you to the authors for making their data available.
 
 Source: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6386196/
 
@@ -34,9 +34,13 @@ Visualization of expression data was performed in R using tidyverse and ggplot2 
 
 ### lncRNAs DE between E3 and E4 cell lines
 
-In the DE analysis, H19 is the most significantly DE gene, and upregulated in E4 cells (log2FC=3.49, FDR=4.71E-248). [H19 is thought to be a pro-inflammatory lncRNA](https://www.frontiersin.org/articles/10.3389/fimmu.2020.579687/full)
+*Broad strokes*
 
-PAX8-AS1 is significantly upregulated in E4 cells (log2FC=4.67, FDR=2.29E-59). Reads from PAX-AS1 seem to mostly be from the final exon of the transcript. 
+In the DE analysis, H19 is the most significantly DE gene, and upregulated in E4 cells (log2FC=8.49, FDR=4.71E-248). [H19 is thought to be a pro-inflammatory lncRNA.](https://www.frontiersin.org/articles/10.3389/fimmu.2020.579687/full). [Other lncRNAs shown to be associated with Alzheimer's](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6262561/) and neuroinflammation are also upregulated in this dataset, including MIAT (log2FC=1.37, FDR=6.57e-08), and NEAT1 (log2FC=1.61, FDR=4.11e-07). Additionally, a small nucleolar host gene (SNHG1) has been [shown to promote neuroinflammation](https://www.tandfonline.com/doi/full/10.1080/15476286.2020.1788848). While this is not upregulated in this dataset, we see differential expression of other SNHG genes, including SNHG18 (log2FC=-1.2, FDR=8.34e-10) and SNHG3 (log2FC=1.14, FDR=3.23e-06), possibly implicating them in the disease process as well.
+
+*More targeted*
+
+PAX8-AS1 is significantly upregulated in E4 cells (log2FC=4.67, FDR=2.29E-59). However, PAX8-AS1 seems to be poorly transcribed, and reads mostly align to the final exon of the transcript.
 
 ![PAX8-AS1](https://github.com/louislamont/ALZ-APOE/blob/main/plots/lncRNAs/PAX8-AS1-all-2.png) 
 
@@ -46,13 +50,13 @@ They also seem to overlap with two cCREs (candidate cis-regulatory element) in t
 
 ![Both cCREs](https://github.com/louislamont/ALZ-APOE/blob/main/plots/lncRNAs/both-ENCODE.png)
 
-However, of cell types in the ENCODE database, H3K27ac marks were most depleted in neural progenitor cells for each cCRE. 
+However, of cell types in the ENCODE database, H3K27ac (enhancer) marks were most depleted in neural progenitor cells for each cCRE. 
 
 ![EH38E2025977 H3K27ac](https://github.com/louislamont/ALZ-APOE/blob/main/plots/lncRNAs/EH38E2025977-H3K27ac.png)
 
 ![EH38E2025978 H3K27ac](https://github.com/louislamont/ALZ-APOE/blob/main/plots/lncRNAs/EH38E2025978-H3K27ac.png)
 
-Is it possible these reads represent an activated enhancer element in E4 cells? If so, why are we seeing these reads in polyA-enriched RNA-Seq data?
+Given that H3K27ac marks are depleted in neural progenitor cells normally, is it possible these reads represent an enhancer elements that become activated in E4 cells?
 
 ### Differential gene usage
 
@@ -68,7 +72,7 @@ On the other hand, exons in the first half of PCDHGC4 were found to be upregulat
 
 ![PCDHGC4 exon differential expression](https://github.com/louislamont/ALZ-APOE/blob/main/plots/splicing/PCDHGC4-exonusage.png)
 
-PCDHGC3 and 4 share their last exons, so the exon-level differential expression data potentially indicates a switch from one PCDHGC3 to 4. More directly, if we look at expression data coming from the locus containing PCDHGC3 and PCDHGC4, we can see a clear difference in the initial exons, while expression looks similar for the latter exons. This suggests a switch from PCDHGC3 to PCDHGC4 expression in E4 cells.
+PCDHGC3 and 4 share their last exons, so the exon-level differential expression data potentially indicates a switch from one PCDHGC3 to 4. More directly, if we look at expression data coming from the locus containing PCDHGC3 and PCDHGC4, we can see a clear difference in the initial exons, while expression looks similar for the latter exons. This suggests a switch from PCDHGC3 to PCDHGC4 expression in E4 cells. [APOE E4, but not E3, was also found to bind to the promoter of PCDHGC4](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4719010/), suggesting a direct link between APOE E4 and this switch from one gene to another.
 
 ![PCDHGC switch](https://github.com/louislamont/ALZ-APOE/blob/main/plots/splicing/PCDHGC3-IGV.png)
 
