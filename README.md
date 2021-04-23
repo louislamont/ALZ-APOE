@@ -36,7 +36,7 @@ Visualization of expression data was performed in R using tidyverse and ggplot2 
 
 *Broad strokes*
 
-In the DE analysis, H19 is the most significantly DE gene, and upregulated in E4 cells (log2FC=8.49, FDR=4.71E-248). [H19 is thought to be a pro-inflammatory lncRNA.](https://www.frontiersin.org/articles/10.3389/fimmu.2020.579687/full). [Other lncRNAs shown to be associated with Alzheimer's](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6262561/) and neuroinflammation are also upregulated in this dataset, including MIAT (log2FC=1.37, FDR=6.57e-08), and NEAT1 (log2FC=1.61, FDR=4.11e-07). Additionally, a small nucleolar host gene (SNHG1) has been [shown to promote neuroinflammation](https://www.tandfonline.com/doi/full/10.1080/15476286.2020.1788848). While this is not upregulated in this dataset, we see differential expression of other SNHG genes, including SNHG18 (log2FC=-1.2, FDR=8.34e-10) and SNHG3 (log2FC=1.14, FDR=3.23e-06), possibly implicating them in the disease process as well.
+In the DE analysis, H19 is the most significantly DE gene, and upregulated in E4 cells (log2FC=8.49, FDR=4.71E-248). [H19 is thought to be a pro-inflammatory lncRNA](https://www.frontiersin.org/articles/10.3389/fimmu.2020.579687/full). [Other lncRNAs shown to be associated with Alzheimer's](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6262561/) and neuroinflammation are also upregulated in this dataset, including MIAT (log2FC=1.37, FDR=6.57e-08), and NEAT1 (log2FC=1.61, FDR=4.11e-07). Additionally, a small nucleolar host gene (SNHG1) has been [shown to promote neuroinflammation](https://www.tandfonline.com/doi/full/10.1080/15476286.2020.1788848). While this is not upregulated in this dataset, we see differential expression of other SNHG genes, including SNHG18 (log2FC=-1.2, FDR=8.34e-10) and SNHG3 (log2FC=1.14, FDR=3.23e-06), possibly implicating additional members of this class of lncRNAs in the disease process as well.
 
 *More targeted*
 
@@ -72,7 +72,7 @@ On the other hand, exons in the first half of PCDHGC4 were found to be upregulat
 
 ![PCDHGC4 exon differential expression](https://github.com/louislamont/ALZ-APOE/blob/main/plots/splicing/PCDHGC4-exonusage.png)
 
-PCDHGC3 and 4 share their last exons, so the exon-level differential expression data potentially indicates a switch from one PCDHGC3 to 4. More directly, if we look at expression data coming from the locus containing PCDHGC3 and PCDHGC4, we can see a clear difference in the initial exons, while expression looks similar for the latter exons. This suggests a switch from PCDHGC3 to PCDHGC4 expression in E4 cells. [APOE E4, but not E3, was also found to bind to the promoter of PCDHGC4](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4719010/), suggesting a direct link between APOE E4 and this switch from one gene to another.
+PCDHGC3 and 4 share their last exons, so the exon-level differential expression data potentially indicates a switch from one PCDHGC3 to 4. More directly, if we look at expression data coming from the locus containing PCDHGC3 and PCDHGC4, we can see a clear difference in the initial exons, while expression looks similar for the latter exons. This suggests a switch from PCDHGC3 to PCDHGC4 expression in E4 cells. [APOE E4, but not E3, was also found to bind to the promoter of PCDHGC4](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4719010/), suggesting the APOE E4 variant is the direct cause of this transcriptional switching.
 
 ![PCDHGC switch](https://github.com/louislamont/ALZ-APOE/blob/main/plots/splicing/PCDHGC3-IGV.png)
 
